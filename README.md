@@ -29,6 +29,13 @@ sudo cp target/release/fusi /usr/local/bin/
 
 ---
 
+## Showcase
+
+![showcase1](imgs/Showcase1.png)
+![showcase2](imgs/Showcase2.png)
+
+---
+
 ## Commands
 
 | Command | What it does |
