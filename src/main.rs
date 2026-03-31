@@ -203,7 +203,10 @@ fn main() {
     }
 
         // Updates Fusi
-        "self-update" => run(false, vec!["bash", "-c", "curl -s https://raw.githubusercontent.com/fusiontech21/Fusi/main/Update/update.sh | bash"]),
+        "self-update" => {
+            run(false, vec!["bash", "-c", "curl -s https://raw.githubusercontent.com/fusiontech21/Fusi/main/Update/update.sh | bash"]);
+            std::process::exit(0); // exit before checkupdate() runs
+        }   
         
         // FUN
         "secret" => {
