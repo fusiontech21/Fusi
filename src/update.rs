@@ -2,7 +2,7 @@
 ALSO KEEP THIS IN THE GITHUB VERSION AND REMOVE IT IN THE AUR VERSION */
 use colored::Colorize;
 
-pub const VERSION: &str = "0.2.2";
+pub const VERSION: &str = "0.3.2";
 
 pub fn checkupdate() {
     let url = "https://api.github.com/repos/fusiontech21/Fusi/releases/latest";
@@ -17,8 +17,7 @@ pub fn checkupdate() {
             if let Some(tg) = txt.split("\"tag_name\":\"").nth(1) {
                 let latst = tg.split('"').next().unwrap_or("");
                 if !latst.is_empty() && latst != VERSION {
-                    println!(); // idk how many times i apologized BUT AGAIN SORRY FOR THE FORMATTING!! 
-                    // WHOEVER READS THIS PLEASE FIX THE FORMATTING!!!!!!
+                    println!(); 
                     println!(
                         "{}",
                         "╔══════════════════════════════════════════╗".yellow()
