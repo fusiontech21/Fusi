@@ -18,13 +18,13 @@ sudo pacman -Syu
 
 ### One line install
 ```bash
-curl -s https://raw.githubusercontent.com/fusiontech21/Fus-UtilityTool/main/setup/install.sh | bash
+curl -s https://raw.githubusercontent.com/fusiontech21/Fusi/main/setup/install.sh | bash
 ```
 
 ### Manual install
 ```bash
-git clone https://github.com/fusiontech21/Fus-UtilityTool
-cd Fus-UtilityTool
+git clone https://github.com/fusiontech21/Fusi
+cd Fusi
 cargo build --release
 sudo cp target/release/fusi /usr/local/bin/
 ```
