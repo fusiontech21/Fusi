@@ -42,3 +42,21 @@ pub fn checkupdate() {
         }
     }
 }
+
+pub fn latest() -> bool {
+    let url = "https://api.github.com/repos/fusiontech21/Fusi/releases/latest";
+    let client = reqwest::blocking::Client::builder()
+        .user_agent("fusi")
+        .build()
+        .unwrap();
+
+    if let Ok(resp) = client.get(url).send() {
+        if let Ok(txt) = resp.text() {
+            if let Some(tg) = txt.split("\"tag_name\":\"").nth(1) {
+                let latst = tg.split('"').next().unwrap_or("");
+                return latst == VERSION;
+            }
+        }
+    }
+    false
+}

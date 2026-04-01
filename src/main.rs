@@ -36,12 +36,18 @@ fn require_pkg(pkg: Option<&String>) -> &str {
 }
 
 fn hasaurhelper() -> Option<&'static str> {
-    if let Ok(status) = Command::new("which").arg("paru").status() {
+    if let Ok(status) = Command::new("which").arg("paru")
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::null())
+        .status() {
         if status.success() {
             return Some("paru");
         }
     }
-    if let Ok(status) = Command::new("which").arg("yay").status() {
+    if let Ok(status) = Command::new("which").arg("yay")
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::null())
+        .status() {
         if status.success() {
             return Some("yay");
         }
@@ -228,9 +234,13 @@ fn main() {
 
         // Updates Fusi
         "self-update" => {
+            if update::latest() {
+                println!("{}", "You are already on the latest version!".green());
+        } else {
             run(false, vec!["bash", "-c", "curl -s https://raw.githubusercontent.com/fusiontech21/Fusi/main/Update/update.sh | bash"]);
-            std::process::exit(0); // exit before checkupdate() runs
-        }   
+        }
+        std::process::exit(0);
+        }
         
         // FUN
         "secret" => {
@@ -261,6 +271,8 @@ fn main() {
         println!("{} {}", "fusi remove <pkg>".green().bold(),         "→ Remove a package (full cleanup)");
         println!("{} {}", "fusi softremove <pkg>".green().bold(),     "→ Remove just the package");
         println!("{} {}", "fusi reinstall <pkg>".green().bold(),      "→ Reinstall a package");
+        println!("{} {}", "fusi aur <pkg>".green().bold(),            "→ Installs a package from the AUR");
+        println!("{} {}", "fusi aur-update <pkg>".green().bold(),     "→ Updates a Package thats from the AUR");
         println!("{} {}", "fusi search <pkg>".green().bold(),         "→ Search for a package");
         println!("{} {}", "fusi update".green().bold(),               "→ Update the entire system");
         println!("{} {}", "fusi upgrade <pkg>".green().bold(),        "→ Upgrade a specific package");
