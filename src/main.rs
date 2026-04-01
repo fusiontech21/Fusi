@@ -65,14 +65,13 @@ fn main() {
     match cmd {
         // fusi install <package(s)>
         "install" => {
-            let hlpr = hasaurhelper().unwrap_or("pacman");
-            let sudo = hlpr == "pacman";
-            let mut a = vec![hlpr, "-S"];
-            for p in &args[1..] { a.push(p.as_str()); }
-            run(sudo,a)
+                let mut a = vec!["pacman", "-S"];
+                for p in &args[1..] { a.push(p.as_str()); }
+                run(true, a)
         }
 
-        // fusi remove <package(s)>
+
+        // removes a package and its deps command = fusi remove pkg
         "remove" => {
         let mut a = vec!["pacman", "-Rns"];
         for p in &args[1..] { a.push(p.as_str()); }
@@ -141,6 +140,28 @@ fn main() {
             run(true, a);
         }
 
+        /* AUR  STUFF*/
+        // Install pk from aur
+            "aur" => {
+                let hlpr = hasaurhelper().unwrap_or_else(|| {
+                    eprintln!("{}", "No AUR helper found! Install Paru or Yay first.".red());
+                    std::process::exit(1);
+                });
+                let mut a = vec![hlpr, "-S"];
+                for p in &args[1..] { a.push(p.as_str()); }
+                run(false, a); 
+            }
+        
+        // updates a pkg from aur
+        "aur-update" => {
+            let hlpr = hasaurhelper().unwrap_or_else(|| {
+                eprintln!("{}", "No AUR helper found! Install paru or yay first.".red());
+                std::process::exit(1);
+            });
+            run(false, vec![hlpr, "-Sua"]);
+}
+
+        /* AUR  STUFF */
 
         // Checks if a specific pkg is installed
         "installed" => run(false, vec!["pacman", "-Qs", require_pkg(pkg)]),
@@ -266,7 +287,7 @@ fn main() {
         println!("{} {}", "fusi autoremove".green().bold(),           "→ Remove orphaned packages");
         println!("{} {}", "fusi backup".green().bold(),               "→ Backup installed packages to a file");
         println!("{} {}", "fusi restore".green().bold(),              "→ Restore packages from backup");
-        println!("{} {}", "fusi mirrors".green().bold(),              "→ Update your mirrorlist");
+        println!("{} {}", "fusi mirrors".green().bold(),              "→ List your mirrorlist");
         println!("{} {}", "fusi unlock".green().bold(),               "→ Remove pacman lock file");
         println!("{} {}", "fusi self-update".green().bold(),          "→ Update fusi to the latest version");
         println!("{} {}", "fusi details".green().bold(),              "→ Show info about fusi");
